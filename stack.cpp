@@ -8,7 +8,7 @@ public:
         top = -1;
     }
     Stack() {
-        p = (int *)malloc(sizeof(int) * 100);
+        p = (int *)malloc(sizeof(int) * 5);
         top = -1;
     }
     ~Stack() {
@@ -18,12 +18,12 @@ public:
         p[++top] = data;
     }
     int pop() {
-        if (top == 0) {
+        if (top == -1) {
             printf("wrong no data\n");
             return -1;
         }
         int popdata = p[top--];
-        printf("pop: %d\n", popdata);
+        // printf("pop: %d\n", popdata);
         return popdata;
     }
     bool isnull() {
@@ -62,16 +62,44 @@ int minofstack(Stack &minstack) {
     return minstack.topdata();
 }
 
+// 利用两个栈实现一个队列
+// 栈和队列的主要区别在于元素的次序，一个栈保存的是逆序，再逆序一次，就变成正序了。
+// 入栈入newStack，这里保存的是逆序。出栈出oldStack，如果oldStack为空，就把newStack所有元素弹出，放入oldStack。
+class Queue{
+public:
+    void enQueue(int data) {
+        newStack.push(data);
+    }
+    int deQueue() {
+        if (oldStack.isnull()) {
+            if (newStack.isnull()) {
+                printf("no data\n");
+                return -1;
+            }
+            while(!newStack.isnull()) {
+                int data = newStack.pop();
+                oldStack.push(data);
+            }
+        }
+        int datapop = oldStack.pop();
+        printf("pop data: %d\n", datapop);
+    }
+private:
+    Stack newStack;
+    Stack oldStack;
+};
+
+
+
 int main() {
-    Stack stack,minstack;
-    minpush(stack, 6, minstack);
-    printf("min:%d\n", minofstack(minstack));
-    minpush(stack, 3, minstack);
-    printf("min:%d\n", minofstack(minstack));
-    minpush(stack, 5, minstack);
-    printf("min:%d\n", minofstack(minstack));
-    minpush(stack, 2, minstack);
-    printf("min:%d\n", minofstack(minstack));
-    minpop(stack, minstack);
-    printf("min:%d\n", minofstack(minstack));
+    Queue q1;
+    Stack st(1);
+    q1.enQueue(1);
+    q1.deQueue();
+    q1.enQueue(3);
+    q1.enQueue(4);
+    q1.deQueue();
+    q1.enQueue(5);
+    q1.deQueue();
+    q1.deQueue();
 }
