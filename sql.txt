@@ -1,0 +1,16 @@
+Student(S#,Sname,Sage,Ssex)  学生表
+
+Course(C#,Cname,T#)  课程表
+
+SC(S#,C#,score)  成绩表
+
+Teacher(T#,Tname)   教师表
+
+
+select S#,
+select count(*) + 1from
+(select a.score from
+(select avg(score) ,S# from SC group by(S#))a
+where a.score >SC.score
+) as Rank
+from SC
