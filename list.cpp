@@ -3,6 +3,7 @@
 
 typedef struct List{
     List *next;
+    
     int data;
 }ListNode;
 
